@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4F94CD"
+
+    >
+
+<LinearLayout
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4F94CD"
+    >
+
+    <LinearLayout
+        android:background="#87CEFA"
+        android:layout_marginTop="120dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_margin="5dp"
+
+            android:id="@+id/goodscheckfirst_input_et"
+            android:background="@drawable/shape"
+            android:hint="请输入盘点货位号"
+            android:layout_width="match_parent"
+
+            android:layout_height="30dp"
+            android:text="" />
+
+        <LinearLayout
+            android:layout_marginTop="60dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_margin="5dp"
+                android:background="@drawable/shape"
+                android:id="@+id/goodscheckfirst_sure_btn"
+                android:text="确认"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp" />
+            <Button
+                android:layout_margin="5dp"
+                android:background="@drawable/shape"
+                android:id="@+id/goodscheckfirst_exit_btn"
+                android:text="退出"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp" />
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+   </LinearLayout>

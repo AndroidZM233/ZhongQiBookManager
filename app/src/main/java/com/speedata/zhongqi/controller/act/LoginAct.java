@@ -1,0 +1,254 @@
+/*
+ *
+ * @author Echo
+ * @created 2016.6.3
+ * @email bairu.xu@speedatagroup.com
+ * @version $version
+ *
+ */
+
+package com.speedata.zhongqi.controller.act;
+
+import android.content.Context;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.alibaba.fastjson.JSON;
+import com.speedata.zhongqi.App;
+import com.speedata.zhongqi.R;
+import com.speedata.zhongqi.application.APIMethod;
+import com.speedata.zhongqi.application.AppConst;
+import com.speedata.zhongqi.bean.webServiceBean.LoginBeanClass;
+import com.speedata.zhongqi.crash.utils.SysInfoUtil;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.util.List;
+
+import common.base.act.FragActBase;
+import common.base.dialog.ToastUtils;
+import common.event.ViewMessage;
+import common.http.MResponse;
+import common.http.MResponseListener;
+import common.utils.StringUtil;
+import common.webserice.WebService;
+
+import static common.utils.LogUtil.DEGUG_MODE;
+
+/**
+ *
+ */
+@EActivity(R.layout.act_login)
+public class LoginAct extends FragActBase {
+    private static final String TAG = DEGUG_MODE ? "LoginAct" : LoginAct.class.getSimpleName();
+    private static final boolean debug = true;
+    @ViewById
+    ImageView setting;
+    @ViewById
+    ImageView imageView7;
+    @ViewById
+    EditText telEt;
+    @ViewById
+    ImageView telEtClearbtn;
+    @ViewById
+    ImageView imageView8;
+    @ViewById
+    EditText pwdEt;
+    @ViewById
+    ImageView pwdEtClearbtn;
+    @ViewById
+    Button loginBtn;
+    @ViewById
+    TextView versionTx;
+    @ViewById
+    TextView deviceId;
+    @ViewById
+    CheckBox cb_loginRem;
+    @ViewById
+    Button exitBtn;
+
+
+    private String userName;
+    private String pwd;
+    private boolean aFalse;
+
+    @Click
+    void setting() {
+        openAct(SettingAct.class, true);
+    }
+
+
+    @Click
+    void exitBtn() {
+        App.getInstance().exit();
+    }
+
+    @AfterViews
+    protected void main() {
+        //判断设备型号是否符合要求
+//        if (!android.os.Build.MODEL.equalsIgnoreCase("kt40")) {
+//            showToast("设备不匹配");
+//            finish();
+//        }
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        App.getInstance().addActivity(LoginAct.this);
+        setSwipeEnable(false);
+        versionTx.setText("版本号:" + SysInfoUtil.getVersionName(this));
+        deviceId.setText("设备号:" + SysInfoUtil.getDeviceId(this));
+        telEt.setText(getXml(AppConst.USERNAME, "chenm"));
+        pwdEt.setText("");
+        setClearBtnListener(telEt, telEtClearbtn);
+        setClearBtnListener(pwdEt, pwdEtClearbtn);
+        aFalse = Boolean.parseBoolean(getXml(AppConst.ISCHECKED, "false"));
+        cb_loginRem.setChecked(aFalse);
+        if (cb_loginRem.isChecked()) {
+            pwdEt.setText(getXml(AppConst.PASSWORD, ""));
+            telEt.setText(getXml(AppConst.USERNAME, "chenm"));
+            if (!getXml("BACK","1").equals("back")){
+                ipUrl=getXml("IP","");
+                loginBtn();
+            }else {
+                setXml("BACK","noback");
+            }
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ipUrl=getXml("IP","");
+    }
+
+    private void login() {
+
+
+/**
+ * SOAP协议
+ */
+        params.clear();
+        params.put("UserName", userName);
+        params.put("Password", pwd);
+//        params.put("Password", "");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WebService.getInstance().callWebService(params,
+                        APIMethod.CheckUser,ipUrl, new MResponseListener() {
+                            @Override
+                            public void onSuccess(MResponse response) {
+                                String callWebService = String.valueOf(response.data);
+                                if (callWebService.equals("用户名或者密码错误！")) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast("用户名或者密码错误！");
+                                        }
+                                    });
+                                } else {
+                                    LoginBeanClass loginBeanClass = JSON.parseObject(callWebService
+                                            , LoginBeanClass.class);
+                                    List<LoginBeanClass.CheckUserBean> checkUser = loginBeanClass.getCheckUser();
+                                    if (checkUser != null) {
+                                        String userid = checkUser.get(0).getUSERID();
+                                        setXml(AppConst.USERID, userid);
+                                        if (cb_loginRem.isChecked()) {
+                                            setXml(AppConst.USERNAME, userName);
+                                            setXml(AppConst.PASSWORD, pwd);
+                                            setXml(AppConst.ISCHECKED, "true");
+                                        } else {
+                                            setXml(AppConst.ISCHECKED, "false");
+                                        }
+
+                                    }
+                                    openAct(MainAct.class, true);
+                                }
+                                hideLoading();
+                            }
+
+                            @Override
+                            public void onError(final MResponse response) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (response.msg != null) {
+                                            showToast(response.msg.toString());
+                                        }else {
+                                            showToast("出错了！");
+                                        }
+                                        hideLoading();
+                                    }
+                                });
+                            }
+                        });
+            }
+        }).start();
+
+
+    }
+
+
+    public boolean checkParms(String... parms) {
+        if (parms != null && parms.length == 2) {
+            if (StringUtil.isBlank(parms[0])) {
+                ToastUtils.showShort("用户名不能为空");
+                return false;
+            }
+//            if (StringUtil.isBlank(parms[1])) {
+//                ToastUtils.showShort("密码为空");
+//                return false;
+//            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    @Click
+    void cb_loginRem(){
+        if (cb_loginRem.isChecked()) {
+            setXml(AppConst.USERNAME, userName);
+            setXml(AppConst.PASSWORD, pwd);
+            setXml(AppConst.ISCHECKED, "true");
+        } else {
+            setXml(AppConst.ISCHECKED, "false");
+        }
+    }
+    @Click
+    void loginBtn() {
+        userName = telEt.getText().toString();
+        pwd = pwdEt.getText().toString();
+        if (checkParms(userName, pwd)) {
+            showLoading("登录中....");
+            login();
+
+        }
+    }
+
+
+    @Override
+    protected Context regieterBaiduBaseCount() {
+        return null;
+    }
+
+    @Override
+    protected void initTitlebar() {
+
+    }
+
+    @Override
+    public void onEventMainThread(ViewMessage viewMessage) {
+
+    }
+}
+

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#4F94CD"
+        >
+
+        <com.speedata.zhongqi.view.CustomTitlebar
+            android:descendantFocusability="blocksDescendants"
+            android:id="@+id/titlebar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+        <LinearLayout
+
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+                <LinearLayout
+                    android:layout_margin="1dp"
+                    android:background="#4F94CD"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+
+                    <RelativeLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <EditText
+                            android:singleLine="true"
+                            android:layout_margin="1dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:hint="请输入盘点货位号"
+                            android:background="@drawable/shape"
+                            android:id="@+id/goodscheckfirst_input_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp" >
+                            <requestFocus/>
+                        </EditText>
+
+                        <ImageView
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/tel_et_clearbtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignRight="@+id/goodscheckfirst_input_et"
+                            android:layout_centerVertical="true"
+                            android:padding="8dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/clear_button"
+                            android:visibility="visible" />
+                    </RelativeLayout>
+
+
+
+
+
+
+                    <LinearLayout
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:textSize="18sp"
+                            android:id="@+id/goodscheckfirst_sure_btn"
+                            android:layout_marginRight="0.5dp"
+                            style="?android:textAppearanceSmall"
+                            android:layout_width="0dp"
+                            android:textColor="#000000"
+                            android:layout_weight="1"
+                            android:layout_height="fill_parent"
+                            android:background="@drawable/bg_alibuybutton"
+                            android:text="开始盘点"
+                            android:textStyle="bold"
+
+                            />
+
+                        <Button
+                            android:visibility="gone"
+                            android:id="@+id/goodscheckfirst_exit_btn"
+                            style="?android:textAppearanceSmall"
+                            android:layout_width="0dp"
+                            android:layout_marginLeft="0.5dp"
+                            android:layout_weight="1"
+                            android:layout_height="fill_parent"
+                            android:textColor="#000000"
+                            android:background="@drawable/shape"
+                            android:text="退出"
+                            android:textStyle="bold"
+
+                            />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+</LinearLayout>

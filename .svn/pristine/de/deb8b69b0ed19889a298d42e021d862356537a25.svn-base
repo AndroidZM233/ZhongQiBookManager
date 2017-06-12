@@ -1,0 +1,201 @@
+/*
+ *
+ * @author Echo
+ * @created 2016.6.3
+ * @email bairu.xu@speedatagroup.com
+ * @version $version
+ *
+ */
+
+package com.speedata.zhongqi.controller.act;
+
+import android.content.Context;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.speedata.zhongqi.R;
+import com.speedata.zhongqi.application.AppConst;
+import com.speedata.zhongqi.crash.utils.SysInfoUtil;
+import com.speedata.zhongqi.model.HttpModel;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
+import common.base.act.FragActBase;
+import common.base.dialog.ToastUtils;
+import common.event.ViewMessage;
+import common.http.MResponse;
+import common.http.MResponseListener;
+import common.utils.StringUtil;
+
+import static common.utils.LogUtil.DEGUG_MODE;
+
+/**
+ *
+ */
+@EActivity(R.layout.act_login)
+public class LoginAct extends FragActBase {
+    private static final String TAG = DEGUG_MODE ? "LoginAct" : LoginAct.class.getSimpleName();
+    private static final boolean debug = true;
+    @ViewById
+    ImageView imageView7;
+    @ViewById
+    EditText telEt;
+    @ViewById
+    ImageView telEtClearbtn;
+    @ViewById
+    ImageView imageView8;
+    @ViewById
+    EditText pwdEt;
+    @ViewById
+    ImageView pwdEtClearbtn;
+    @ViewById
+    Button loginBtn;
+    @ViewById
+    TextView versionTx;
+    @ViewById
+    TextView deviceId;
+
+    @Click
+    void setting() {
+        openAct(SettingAct.class, true);
+    }
+
+    @AfterViews
+    protected void main() {
+        setSwipeEnable(false);
+        versionTx.setText("版本号:" + SysInfoUtil.getVersionName(this));
+        deviceId.setText("设备号:" + SysInfoUtil.getDeviceId(this));
+        telEt.setText("chenm");
+        pwdEt.setText("");
+        setClearBtnListener(telEt, telEtClearbtn);
+        setClearBtnListener(pwdEt, pwdEtClearbtn);
+        String usernamestr = getXml(AppConst.USERNAME, null);
+        String pwdstr = getXml(AppConst.PASSWORD, null);
+        boolean b = StringUtil.isBlank(usernamestr);
+        boolean b1 = StringUtil.isBlank(pwdstr);
+    }
+
+    private void login() {
+
+        HttpModel.getInstance().CheckUser(new MResponseListener() {
+            @Override
+            public void onSuccess(MResponse response) {
+                hideLoading();
+                Log.d(TAG, "onSuccess() returned: " + response.toString());
+                //TODO 解析 并保存  百度Json解析,读取返回的信息
+
+
+
+                setXml(AppConst.USERID, "");
+                setXml(AppConst.USERNAME, "");
+                setXml(AppConst.USERNAME, "");
+
+
+                openAct(MainAct.class, true);
+
+
+
+            }
+
+            @Override
+            public void onError(MResponse response) {
+                hideLoading();
+                Log.d(TAG, "onError() returned: " + response.toString());
+
+            }
+        }, "use", "pwd");
+
+//        HttpModel.getInstance().PDLL(new MResponseListener() {
+//            @Override
+//            public void onSuccess(MResponse response) {
+//                Log.e(TAG, "onSuccess: " + response.toString());
+//                showToast("response.toString()" + response.toString());
+//                openAct(MainAct.class, true);
+//            }
+//
+//            @Override
+//            public void onError(MResponse response) {
+//                Log.e(TAG, "onError: " + response.toString());
+//                hideLoading();
+//                showToast("response.toString()" + response.toString());
+//            }
+//        }, "11", "11");
+    }
+
+
+
+
+    public boolean checkParms(String... parms) {
+        if (parms != null && parms.length == 2) {
+            if (StringUtil.isBlank(parms[0])) {
+                ToastUtils.showLong("用户名不能为空");
+                return false;
+            }
+            if (StringUtil.isBlank(parms[1])) {
+                ToastUtils.showLong("密码为空");
+
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    @Click
+    void loginBtn() {
+        final String userName = telEt.getText().toString();
+        final String pwd = pwdEt.getText().toString();
+        if (checkParms(userName, pwd)) {
+            showLoading("登录中....");
+//            login(userName, pwd);
+            login();
+
+        }
+    }
+
+//    private void login(final String userName, final String pwd) {
+//        HttpModel.getInstance().Initlogin(new MResponseListener() {
+//            @Override
+//            public void onSuccess(MResponse response) {
+//                LoginBean dataBean = (LoginBean) response.getData();
+//                App.getInstance().setLoginBean(dataBean);
+//                LogUtil.i(debug, TAG, "【LoginAct.onSuccess()】【storeResponses=" + dataBean +
+//                        "】");
+//                setXml(AppConst.USERNAME, userName);
+//                setXml(AppConst.PASSWORD, pwd);
+//                LoginBean loginBean = App.getInstance().getLoginBean();
+//                LogUtil.i(debug, TAG, "【LoginAct.onSuccess()】【loginBean=" + loginBean + "】");
+//                loginNew(userName, pwd);
+//            }
+//            @Override
+//            public void onError(MResponse response) {
+//                showToast(response.getMsg());
+//                hideLoading();
+//            }
+//        }, userName, pwd);
+//    }
+
+
+    @Override
+    protected Context regieterBaiduBaseCount() {
+        return null;
+    }
+
+    @Override
+    protected void initTitlebar() {
+
+    }
+
+    @Override
+    public void onEventMainThread(ViewMessage viewMessage) {
+
+    }
+}
+

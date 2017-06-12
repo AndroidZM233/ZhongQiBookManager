@@ -1,0 +1,89 @@
+package com.speedata.zhongqi.controller.act;
+
+import android.content.Context;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.speedata.zhongqi.R;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
+import common.base.act.FragActBase;
+import common.event.ViewMessage;
+
+/**
+ * Created by TER on 2016/6/22.
+ */
+
+@EActivity(R.layout.act_goodscollect)
+public class GoodsCollectAct extends FragActBase {
+    @ViewById
+    EditText edvSearchGoodscollect;
+    @ViewById
+    ImageButton ivSearchGoodscollect;
+    @ViewById
+    ListView goodscollectCollectlistviewLv;
+    @ViewById
+    TextView goodscollectZPZTv;
+    @ViewById
+    TextView goodscollectZSLTv;
+    @ViewById
+    TextView goodscollectZMYTv;
+    @ViewById
+    Button goodscollectCollectBtn;
+    @ViewById
+    Button goodscollectBrowseBtn;
+//    @ViewById
+//    Button goodscollectPrintBtn;
+    @ViewById
+    Button goodscollectHomepageBtn;
+
+
+    @Click
+    void ivSearchGoodscollect(){
+        //搜索
+    }
+
+    @Click
+    void goodscollectCollectBtn(){
+        //采集
+    }
+
+    @Click
+    void goodscollectBrowseBtn(){
+        openAct(GoodsBrowseAct.class,true);
+    }
+
+    @Click
+    void goodscollectHomepageBtn(){
+        openAct(MainAct.class,true);
+    }
+
+
+
+    @AfterViews
+    protected void main(){
+
+    }
+
+    @Override
+    protected Context regieterBaiduBaseCount() {
+        return null;
+    }
+
+    @Override
+    protected void initTitlebar() {
+
+    }
+
+    @Override
+    public void onEventMainThread(ViewMessage viewMessage) {
+
+    }
+}

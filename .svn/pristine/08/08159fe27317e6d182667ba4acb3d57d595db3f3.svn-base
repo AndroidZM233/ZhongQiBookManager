@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="30dp"
+    android:orientation="horizontal">
+
+    <com.speedata.zhongqi.view.MarqueeTextView
+        android:id="@+id/tx_billnum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="运单号"
+        android:textSize="@dimen/commom_mini_textsize" />
+
+    <TextView
+        android:id="@+id/tx_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="件数"
+        android:textSize="@dimen/commom_mini_textsize" />
+
+    <com.speedata.zhongqi.view.MarqueeTextView
+        android:id="@+id/tx_reason"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="原因"
+        android:textSize="@dimen/commom_mini_textsize" />
+
+    <com.speedata.zhongqi.view.MarqueeTextView
+        android:id="@+id/tx_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="备注"
+        android:textSize="@dimen/commom_mini_textsize" />
+
+</LinearLayout>

@@ -1,0 +1,96 @@
+package com.speedata.zhongqi.controller.act;
+
+import android.content.Context;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.speedata.zhongqi.R;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
+import common.base.act.FragActBase;
+import common.event.ViewMessage;
+
+/**
+ * Created by TER on 2016/6/22.
+ */
+@EActivity(R.layout.act_customercollect)
+public class CustomerCollectAct extends FragActBase{
+
+
+    @ViewById
+    TextView customercollectCustomerTv;
+    @ViewById
+    EditText edvSearchCustomercollect;
+    @ViewById
+    ImageButton ivSearchCustomercollect;
+    @ViewById
+    ListView customercollectCollectlistviewLv;
+    @ViewById
+    TextView customercollectZPZTv;
+    @ViewById
+    TextView customercollectZSLTv;
+    @ViewById
+    TextView customercollectZMYTv;
+    @ViewById
+    Button customercollectCollectBtn;
+    @ViewById
+    Button customercollectBrowseBtn;
+//    @ViewById
+//    Button customercollectPrintBtn;
+    @ViewById
+    Button customercollectHomepageBtn;
+
+
+
+
+    @Click
+    void ivSearchCustomercollect(){
+        //搜索
+    }
+
+    @Click
+    void customercollectCollectBtn(){
+        //采集
+    }
+
+    @Click
+    void customercollectBrowseBtn(){
+        openAct(CustomerBrowseAct.class,true);
+    }
+
+    @Click
+    void customercollectHomepageBtn(){
+        openAct(MainAct.class,true);
+    }
+
+
+    @AfterViews
+    protected void main(){
+
+    }
+
+
+
+
+    @Override
+    protected Context regieterBaiduBaseCount() {
+        return null;
+    }
+
+    @Override
+    protected void initTitlebar() {
+
+    }
+
+    @Override
+    public void onEventMainThread(ViewMessage viewMessage) {
+
+    }
+}

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4F94CD"
+
+    >
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:id="@+id/goodstrim_title_tv"
+            android:layout_gravity="bottom"
+            android:background="#FFFFFF"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:text="欢迎进入货位调整["
+            android:layout_width="wrap_content"
+            android:layout_height="35dp" />
+        <TextView
+            android:layout_gravity="bottom"
+            android:id="@+id/goodstrim_department_tv"
+            android:background="#FFFFFF"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:text="部门名称"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp" />
+        <TextView
+            android:layout_gravity="bottom"
+            android:background="#FFFFFF"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:text="]"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:paddingTop="6dp"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:text="目标货位"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent" />
+
+        <RelativeLayout
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <EditText
+                android:id="@+id/goodstrim_inputlocation_et"
+                android:layout_width="174dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_edit"
+                android:hint="输入货位号"
+                android:singleLine="true">
+                <requestFocus />
+            </EditText>
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:id="@+id/tel_et_clearbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/goodstrim_inputlocation_et"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/clear_button"
+                android:visibility="visible" />
+            <Button
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="搜索"
+                android:id="@+id/goodstrim_searchlocation_btn"
+                android:background="@drawable/bg_alibuybutton"
+                android:layout_toEndOf="@+id/goodstrim_inputlocation_et"
+                android:layout_toRightOf="@+id/goodstrim_inputlocation_et"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/goodstrim_input_et"
+            android:layout_width="255dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_edit"
+            android:hint="输入商品条形码"
+            android:singleLine="true">
+            <requestFocus />
+        </EditText>
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:id="@+id/tel_et_clearbtn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/goodstrim_input_et"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/clear_button"
+            android:visibility="visible" />
+        <Button
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="搜索"
+            android:id="@+id/goodstrim_search_btn"
+            android:background="@drawable/bg_alibuybutton"
+            android:layout_toEndOf="@+id/goodstrim_input_et"
+            android:layout_toRightOf="@+id/goodstrim_input_et"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:text="期末库存:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+
+            android:id="@+id/goodstrim_QMKC_tv"
+            android:text=""
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:text="当前货位:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/goodstrim_HWBH_tv"
+            android:text=""
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:text="定价:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/goodstrim_DJ_tv"
+            android:text=""
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:text="发行分类:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+
+            android:id="@+id/goodstrim_FXFLMC_tv"
+            android:text=""
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:text="   版别:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/goodstrim_BB_tv"
+            android:text=""
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:text="品名:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/goodstrim_PM_tv"
+        android:text=""
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/goodstrim_luru_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="录入"
+            android:layout_weight="1"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/bg_alibuybutton"/>
+
+        <Button
+            android:id="@+id/goodstrim_clean_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="30dp"
+            android:text="清除"
+            android:background="@drawable/bg_alibuybutton"/>
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+
+            android:id="@+id/goodstrim_browse_btn"
+            android:text="浏览"
+            android:background="@drawable/salesrank_btn"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_height="wrap_content" />
+
+
+
+        <Button
+            android:id="@+id/goodstrim_homepage_btn"
+            android:text="主页"
+            android:background="@drawable/salesrank_btn"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+    </LinearLayout>

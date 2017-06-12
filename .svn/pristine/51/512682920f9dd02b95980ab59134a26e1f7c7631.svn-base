@@ -1,0 +1,70 @@
+/*
+ *
+ * @author Echo
+ * @created 2016.6.3
+ * @email bairu.xu@speedatagroup.com
+ * @version $version
+ *
+ */
+
+
+package com.speedata.zhongqi;
+
+import android.os.Handler;
+
+import com.alibaba.fastjson.JSON;
+import com.speedata.zhongqi.application.AppConst;
+import com.speedata.zhongqi.bean.LoginBean;
+import com.speedata.zhongqi.model.HttpModel;
+
+import common.base.BaseApplication;
+import common.base.dialog.ToastUtils;
+import common.utils.NetUtil;
+import common.utils.SharedXmlUtil;
+
+public class App extends BaseApplication implements AppConst {
+
+    private static App instance = null;
+
+    public static App getInstance() {
+        return instance;
+    }
+
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+        NetUtil.init(this);
+        HttpModel.getInstance().init(this);
+        ToastUtils.init(this, new Handler());
+    }
+
+    LoginBean loginBean;
+
+    public LoginBean getLoginBean() {
+        if (loginBean == null) {
+            String loginBeanstr = SharedXmlUtil.getInstance(this).read("loginBean", "");
+            if (loginBean != null) {
+                loginBean = JSON.parseObject(loginBeanstr, LoginBean.class);
+            }
+        }
+        return loginBean;
+    }
+
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+        if (loginBean != null) {
+            SharedXmlUtil.getInstance(this).write("loginBean", JSON.toJSONString(loginBean));
+        }
+    }
+
+    /**
+     * 异常退出处理
+     */
+    @Override
+    protected void onAppExceptionDestroy() {
+
+    }
+
+}

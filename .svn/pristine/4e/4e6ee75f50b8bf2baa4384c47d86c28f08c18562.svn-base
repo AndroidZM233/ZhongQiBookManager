@@ -1,0 +1,117 @@
+package com.speedata.zhongqi.controller.act;
+
+import android.content.Context;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.speedata.zhongqi.R;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
+import common.base.act.FragActBase;
+import common.event.ViewMessage;
+
+/**
+ * Created by TER on 2016/6/22.
+ */
+
+@EActivity(R.layout.act_goodscheck)
+public class CheckDetailAct extends FragActBase {
+    @ViewById
+    TextView goodscheckLocationTv;
+    @ViewById
+    EditText goodscheckInputEt;
+    @ViewById
+    Button goodscheckSearchBtn;
+    @ViewById
+    TextView goodscheckGoodsnameTv;
+
+    @ViewById
+    TextView goodscheckPriceTv;
+    @ViewById
+    TextView goodscheckEditionTv;
+
+    @ViewById
+    Button goodscheckSureBtn;
+    @ViewById
+    ListView goodscheckChecklistviewLv;
+    @ViewById
+    Button goodscheckEnteringBtn;
+    @ViewById
+    Button goodscheckBrowseBtn;
+    @ViewById
+    Button goodscheckPrintBtn;
+    @ViewById
+    Button goodscheckHomepageBtn;
+
+
+    @ViewById
+    TextView goodscheckCurrentinventoryTv;
+    @ViewById
+    TextView goodscheckPublicationdateTv;
+    @ViewById
+    TextView goodscheckCheckednumberTv;
+    @ViewById
+    TextView goodscheckInventorycountTv;
+
+
+
+    @Click
+    void goodscheckSearchBtn(){
+        //搜索
+    }
+
+    @Click
+    void goodscheckSureBtn(){
+        //确认搜索结果
+    }
+
+    @Click
+    void goodscheckEnteringBtn(){
+        //盘点录入
+    }
+
+    @Click
+    void goodscheckBrowseBtn(){
+        //进入浏览页
+        openAct(CheckBrowseAct.class,true);
+    }
+
+    @Click
+    void goodscheckPrintBtn(){
+        //打印
+    }
+
+    @Click
+    void goodscheckHomepageBtn(){
+        openAct(MainAct.class,true);
+    }
+
+
+
+    @AfterViews
+    protected void main(){
+
+    }
+
+
+    @Override
+    protected Context regieterBaiduBaseCount() {
+        return null;
+    }
+
+    @Override
+    protected void initTitlebar() {
+
+    }
+
+    @Override
+    public void onEventMainThread(ViewMessage viewMessage) {
+
+    }
+}

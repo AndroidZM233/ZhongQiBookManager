@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/root_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@+id/left_top"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:orientation="vertical">
+
+    <com.speedata.zhongqi.view.CustomTitlebar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearLayout"
+        android:layout_below="@+id/titlebar"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/item_comom_height"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/commom_margin"
+                    android:layout_marginRight="@dimen/commom_margin"
+                    android:text="清单类型"
+                    android:textColor="@color/commom_text_color"
+                    android:textSize="@dimen/commom_min_textsize"/>
+
+                <TextView
+                    android:id="@+id/tx_bill_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="发往寄件中心"
+                    android:textColor="@color/commom_text_color"
+                    android:textSize="@dimen/commom_min_textsize"/>
+
+                <Button
+                    android:id="@+id/btn_down_store"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="下载库存"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/item_comom_height"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/commom_margin"
+                    android:layout_marginRight="@dimen/commom_margin"
+                    android:text="车线"
+                    android:textColor="@color/commom_text_color"
+                    android:textSize="@dimen/commom_min_textsize"/>
+
+                <EditText
+                    android:id="@+id/edv_car_line"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"/>
+
+                <ImageView
+                    android:id="@+id/edv_car_line_search"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_settings"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/item_comom_height"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/commom_margin"
+                    android:layout_marginRight="@dimen/commom_margin"
+                    android:text="下一站"
+                    android:textColor="@color/commom_text_color"
+                    android:textSize="@dimen/commom_min_textsize"/>
+
+
+                <EditText
+                    android:id="@+id/edv_next_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="编号"
+                    android:background="@drawable/bg_edit"
+                    />
+
+                <EditText
+                    android:id="@+id/edv_next_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_edit"
+                    android:hint="简称"/>
+
+                <Button
+                    android:id="@+id/btn_search_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="查询"
+                    android:textColor="@color/commom_text_color"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/item_comom_height"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/commom_margin"
+                    android:layout_marginRight="@dimen/commom_margin"
+                    android:text="车牌号"
+                    android:textColor="@color/commom_text_color"
+                    android:textSize="@dimen/commom_min_textsize"/>
+
+
+                <EditText
+                    android:id="@+id/edv_car_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_edit"/>
+
+                <Button
+                    android:id="@+id/btn_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="..."
+                    android:textColor="@color/commom_text_color"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/item_comom_height"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/commom_margin"
+                    android:layout_marginRight="@dimen/commom_margin"
+                    android:text="司机"
+                    android:textColor="@color/commom_text_color"
+                    android:textSize="@dimen/commom_min_textsize"/>
+
+                <EditText
+                    android:id="@+id/edv_car_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_edit"
+                    android:hint="编号"
+                    android:maxLength="5"/>
+
+                <EditText
+                    android:id="@+id/edv_car_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_edit"
+                    android:hint="姓名"/>
+
+
+                <Button
+                    android:id="@+id/btn_car_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="查询"
+                    android:textColor="@color/commom_text_color"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/item_comom_height"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/commom_margin"
+                    android:layout_marginRight="@dimen/commom_margin"
+                    android:text="扫描"
+                    android:textColor="@color/commom_text_color"
+                    android:textSize="@dimen/commom_min_textsize"/>
+
+                <EditText
+                    android:id="@+id/edv_waybill_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:hint="运单条码"/>
+
+                <Button
+                    android:id="@+id/btn_waybill_pinjie"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="-"
+                    android:textColor="@color/commom_text_color"/>
+
+
+                <Button
+                    android:id="@+id/btn_waybill_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="添加"
+                    android:textColor="@color/commom_text_color"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:background="@color/lin_title_bc"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="运单号"
+                    android:textColor="@color/text_white"
+                    android:textSize="@dimen/commom_mini_textsize"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="库存数"
+                    android:textColor="@color/text_white"
+                    android:textSize="@dimen/commom_mini_textsize"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="实扫描"
+                    android:textColor="@color/text_white"
+                    android:textSize="@dimen/commom_mini_textsize"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="重量"
+                    android:textColor="@color/text_white"
+                    android:textSize="@dimen/commom_mini_textsize"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="体积"
+                    android:textColor="@color/text_white"
+                    android:textSize="@dimen/commom_mini_textsize"/>
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="50dp"></ListView>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_weight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/commom_margin"
+                    android:layout_marginRight="@dimen/commom_margin"
+                    android:layout_weight="1"
+                    android:text="合计重量"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/commom_min_textsize"/>
+
+                <TextView
+                    android:id="@+id/tv_volume"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="合计体积"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/commom_min_textsize"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/item_comom_height"
+                android:layout_marginBottom="2dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_detial"
+                    style="@style/base_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1.2"
+                    android:text="查看扫描明细"
+                    android:textColor="@color/text_white"
+                    android:textSize="@dimen/commom_textsize"/>
+
+                <Button
+                    android:id="@+id/btn_reset"
+                    style="@style/base_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:text="重置"
+                    android:textColor="@color/text_white"
+                    android:textSize="@dimen/commom_textsize"/>
+
+                <Button
+                    android:id="@+id/btn_commit"
+                    style="@style/base_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="提交"
+                    android:textColor="@color/text_white"
+                    android:textSize="@dimen/commom_textsize"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

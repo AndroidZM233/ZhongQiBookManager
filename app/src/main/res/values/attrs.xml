@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NumberInput">
+        <attr name="border_color" format="color"/>
+        <attr name="border_width" format="dimension"/>
+        <attr name="minus_color" format="color"/>
+        <attr name="minus_width" format="dimension"/>
+        <attr name="plus_color" format="color"/>
+        <attr name="plus_width" format="dimension"/>
+        <attr name="min_value" format="integer"/>
+        <attr name="initial_value"  format="integer"/>
+        <attr name="max_value" format="integer"/>
+    </declare-styleable>
+</resources>

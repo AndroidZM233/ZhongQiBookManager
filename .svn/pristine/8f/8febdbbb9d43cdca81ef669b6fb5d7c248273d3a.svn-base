@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+    <LinearLayout
+        android:background="#4F94CD"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:layout_gravity="bottom"
+                android:background="#FFFFFF"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:gravity="center"
+                android:text="商品采集"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp" />
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:hint="请输入商品条形码"
+                android:id="@+id/edv_search_goodscollect"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_edit" />
+
+            <ImageButton
+                android:id="@+id/iv_search_goodscollect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/edv_search_goodscollect"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/search" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:background="#787878"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="25dp">
+            <TextView
+                android:gravity="center"
+                android:text="商品编号"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent" />
+
+            <TextView
+                android:gravity="center"
+                android:text="品名"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:gravity="center"
+                android:text="定价"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:gravity="center"
+                android:text="期末"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:gravity="center"
+                android:text="采集数量"
+                android:layout_weight="1.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ListView
+                android:id="@+id/goodscollect_collectlistview_lv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="7"
+                ></ListView>
+
+            <TextView
+
+                android:textSize="25dp"
+                android:layout_weight="1"
+                android:background="#FFFFFF"
+                android:text="汇总信息:"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <LinearLayout
+                android:background="#FFFFFF"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_weight="0.8"
+                android:layout_height="0dp">
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:text="总品种:"
+                    android:textSize="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="18dp"
+                    android:id="@+id/goodscollect_ZPZ_tv"
+                    android:text="1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:text="总数量:"
+                    android:textSize="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="18dp"
+                    android:id="@+id/goodscollect_ZSL_tv"
+                    android:text="20"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:text="总码洋:"
+                    android:textSize="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="18dp"
+                    android:id="@+id/goodscollect_ZMY_tv"
+                    android:text="3980"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/goodscollect_collect_btn"
+                    android:text="采集"
+                    android:background="#FFFFFF"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:id="@+id/goodscollect_browse_btn"
+                    android:text="浏览"
+                    android:background="#FFFFFF"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/goodscollect_print_btn"
+                    android:text="打印"
+                    android:background="#FFFFFF"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content" />
+
+
+
+                <Button
+                    android:id="@+id/goodscollect_homepage_btn"
+                    android:text="主页"
+                    android:background="#FFFFFF"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+</LinearLayout>

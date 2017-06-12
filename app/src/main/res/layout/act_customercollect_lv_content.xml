@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@color/blue_button"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/customercollect_lv_tvSPXXID"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:text="商品编号" />
+
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:id="@+id/customercollect_lv_tvPM"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:text="品名" />
+
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:id="@+id/customercollect_lv_tvDJ"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="定价" />
+
+
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:id="@+id/customercollect_lv_tvQMKC"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="期末" />
+
+
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:id="@+id/customercollect_lv_tvCJSL"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:text="采集数量" />
+</LinearLayout>

@@ -1,0 +1,519 @@
+package com.speedata.zhongqi.controller.act;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.alibaba.fastjson.JSON;
+import com.speedata.zhongqi.App;
+import com.speedata.zhongqi.R;
+import com.speedata.zhongqi.application.APIMethod;
+import com.speedata.zhongqi.application.AppConst;
+import com.speedata.zhongqi.bean.webServiceBean.CxBeanClass;
+import com.speedata.zhongqi.bean.webServiceBean.MbHwBeanClass;
+import com.speedata.zhongqi.controller.adapter.CommonAdapter;
+import com.speedata.zhongqi.controller.adapter.ViewHolder;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.util.List;
+
+import common.base.IBaseScanFragment;
+import common.base.act.FragActBase;
+import common.event.ViewMessage;
+import common.http.MResponse;
+import common.http.MResponseListener;
+import common.utils.ScanUtil;
+import common.webserice.WebService;
+
+/**
+ * Created by TER on 2016/6/22.
+ */
+
+@EActivity(R.layout.act_goodstrim)
+public class TrimAct extends FragActBase implements IBaseScanFragment {
+    @ViewById
+    TextView goodstrimDepartmentTv;
+    @ViewById
+    EditText goodstrimInputlocationEt;
+    @ViewById
+    Button goodstrimSearchlocationBtn;
+    @ViewById
+    EditText goodstrimInputEt;
+    @ViewById
+    Button goodstrimSearchBtn;
+    @ViewById
+    TextView goodstrimQMKCTv;
+    @ViewById
+    TextView goodstrimHWBHTv;
+    @ViewById
+    TextView goodstrimDJTv;
+    @ViewById
+    TextView goodstrimFXFLMCTv;
+    @ViewById
+    TextView goodstrimBBTv;
+    @ViewById
+    TextView goodstrimPMTv;
+    @ViewById
+    Button goodstrimLuruBtn;
+    @ViewById
+    Button goodstrimCleanBtn;
+    @ViewById
+    Button goodstrimBrowseBtn;
+    @ViewById
+    Button goodstrimHomepageBtn;
+    @ViewById
+    TextView goodstrim_title_tv;
+    @ViewById
+    ImageView tel_et_clearbtn;
+    @ViewById
+    ImageView tel_et_clearbtn2;
+    private static final int CxSuccess = 0;
+    private ListView selectLV;
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                //一号多品选择
+                case CxSuccess:
+                    LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+                    final View view = layoutInflater.inflate(R.layout.dia_title
+                            , (ViewGroup) findViewById(R.id.dia_ll_main));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(TrimAct.this);
+                    builder.setTitle(String.valueOf(msg.obj) + "(一号多书)");
+                    builder.setView(view);
+                    builder.setCancelable(false);
+                    final AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    selectLV = (ListView) alertDialog.findViewById(R.id.dia_lv);
+                    CommonAdapter commonAdapter = new CommonAdapter(mContext, hwTz_cx, R.layout.dia_content) {
+                        @Override
+                        public void convert(ViewHolder helper, Object item, int position) {
+                            helper.setText(R.id.tv_PM, hwTz_cx.get(position).getPM());
+                            helper.setText(R.id.tv_DJ, hwTz_cx.get(position).getDJ());
+                            helper.setText(R.id.tv_CBNY, hwTz_cx.get(position).getQMKC());
+                        }
+                    };
+                    selectLV.setAdapter(commonAdapter);
+                    selectLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            setXml("BMSPKFTZID", hwTz_cx.get(position).getBMSPKFTZID());
+                            setXml("SPXXID", hwTz_cx.get(position).getSPXXID());
+                            setXml("HWID", hwTz_cx.get(position).getHWID());
+                            goodstrimQMKCTv.setText(hwTz_cx.get(position).getQMKC());
+                            goodstrimDJTv.setText(hwTz_cx.get(position).getDJ());
+                            goodstrimHWBHTv.setText(hwTz_cx.get(position).getHWBH());
+                            goodstrimFXFLMCTv.setText(hwTz_cx.get(position).getFXFLMC());
+                            goodstrimBBTv.setText(hwTz_cx.get(position).getBB());
+                            goodstrimPMTv.setText(hwTz_cx.get(position).getPM());
+                            alertDialog.cancel();
+                        }
+                    });
+                    break;
+            }
+        }
+    };
+    private List<CxBeanClass.HwTzCxBean> hwTz_cx;
+    private String barcodeResult;
+
+    @Click
+    void goodstrimSearchlocationBtn() {
+        //货位搜索
+        String locationStr = String.valueOf(goodstrimInputlocationEt.getText());
+        if (TextUtils.isEmpty(locationStr)) {
+            showToast("请输入目标货位号！");
+            return;
+        }
+        HWSelect(locationStr);
+    }
+
+    private void HWSelect(String locationStr) {
+        showLoading("查询中...");
+        params.clear();
+        params.put("Hwbh", locationStr);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WebService.getInstance().callWebService(params, APIMethod.HwTz_MbHw,
+                        ipUrl, new MResponseListener() {
+                            @Override
+                            public void onSuccess(MResponse response) {
+                                String callWebService = String.valueOf(response.data);
+                                callWebService = replaceStringNR(callWebService);
+                                if (callWebService.equals("数据获取失败！")) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast("数据获取失败！");
+                                            goodstrimInputlocationEt.setFocusable(true);
+                                            goodstrimInputlocationEt.setFocusableInTouchMode(true);
+                                            goodstrimInputlocationEt.requestFocus();
+                                        }
+                                    });
+                                } else {
+                                    MbHwBeanClass mbHwBeanClass = JSON
+                                            .parseObject(callWebService, MbHwBeanClass.class);
+                                    final List<MbHwBeanClass.HwTzMbHwBean> hwTz_mbHw = mbHwBeanClass.getHwTz_MbHw();
+                                    if (hwTz_mbHw != null) {
+                                        setXml("DEPARTUID", hwTz_mbHw.get(0).getDEPARTUID());
+                                        setXml("HWBMID", hwTz_mbHw.get(0).getHWBMID());
+                                        setXml("DEPARTNAME", hwTz_mbHw.get(0).getDEPARTNAME());
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                goodstrimDepartmentTv.setText(hwTz_mbHw.get(0)
+                                                        .getDEPARTNAME());
+                                                goodstrim_title_tv.setText("货位调整[");
+                                                showToast("数据获取成功！");
+                                                goodstrimInputEt.setFocusable(true);
+                                                goodstrimInputEt.setFocusableInTouchMode(true);
+                                                goodstrimInputEt.requestFocus();
+                                                goodstrimInputEt.findFocus();
+                                            }
+                                        });
+                                    }
+                                }
+                                hideLoading();
+                            }
+
+                            @Override
+                            public void onError(final MResponse response) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (response.msg != null) {
+                                            showToast(response.msg.toString());
+                                        } else {
+                                            showToast("出错了！");
+                                        }
+                                        hideLoading();
+                                    }
+                                });
+                            }
+                        });
+            }
+        }).start();
+    }
+
+    @Click
+    void goodstrimSearchBtn() {
+        //搜索
+        if (TextUtils.isEmpty(goodstrimInputEt.getText())) {
+            showToast("请输入商品条形码！");
+        } else {
+            GetHwTz_Cx(goodstrimInputEt.getText() + "");
+        }
+
+    }
+
+    private void GetHwTz_Cx(final String barcode) {
+        showLoading("查询中...");
+        params.clear();
+        params.put("Txm", barcode);
+        params.put("Bmbh", getXml("DEPARTUID", "1"));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WebService.getInstance().callWebService(params, APIMethod.HwTz_Cx
+                        , ipUrl, new MResponseListener() {
+                            @Override
+                            public void onSuccess(MResponse response) {
+                                String callWebService = String.valueOf(response.data);
+                                callWebService = replaceStringNR(callWebService);
+                                if (callWebService.equals("数据获取失败！")) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast("数据获取失败！");
+                                            goodstrimQMKCTv.setText("");
+                                            goodstrimHWBHTv.setText("");
+                                            goodstrimDJTv.setText("");
+                                            goodstrimFXFLMCTv.setText("");
+                                            goodstrimBBTv.setText("");
+                                            goodstrimPMTv.setText(""); //清除
+                                            return;
+                                        }
+                                    });
+                                } else {
+                                    CxBeanClass cxBeanClass = JSON.parseObject(callWebService, CxBeanClass.class);
+                                    hwTz_cx = cxBeanClass.getHwTz_Cx();
+                                    if (hwTz_cx != null) {
+                                        if (hwTz_cx.size() > 1) {
+                                            Message message = new Message();
+                                            message.what = CxSuccess;
+                                            message.obj = barcode;
+                                            handler.sendMessage(message);
+                                        } else {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    setXml("BMSPKFTZID", hwTz_cx.get(0).getBMSPKFTZID());
+                                                    setXml("SPXXID", hwTz_cx.get(0).getSPXXID());
+                                                    setXml("HWID", hwTz_cx.get(0).getHWID());
+                                                    goodstrimQMKCTv.setText(hwTz_cx.get(0).getQMKC());
+                                                    goodstrimDJTv.setText(hwTz_cx.get(0).getDJ());
+                                                    goodstrimHWBHTv.setText(hwTz_cx.get(0).getHWBH());
+                                                    goodstrimFXFLMCTv.setText(hwTz_cx.get(0).getFXFLMC());
+                                                    goodstrimBBTv.setText(hwTz_cx.get(0).getBB());
+                                                    goodstrimPMTv.setText(hwTz_cx.get(0).getPM());
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                }
+                                hideLoading();
+                            }
+
+                            @Override
+                            public void onError(final MResponse response) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (response.msg != null) {
+                                            showToast(response.msg.toString());
+                                        } else {
+                                            showToast("出错了！");
+                                        }
+                                        hideLoading();
+                                    }
+                                });
+                            }
+                        });
+            }
+        }).start();
+    }
+
+    @Click
+    void goodstrimLuruBtn() {
+        //录入
+        if (TextUtils.isEmpty(goodstrimInputlocationEt.getText())) {
+            showToast("目标货位为空");
+            return;
+        }
+        if (TextUtils.isEmpty(goodstrimInputEt.getText())) {
+            showToast("商品条码为空");
+            return;
+        }
+        if (TextUtils.isEmpty(goodstrimPMTv.getText())) {
+            showToast("请先扫描条码");
+            return;
+        }
+        showLoading("录入中...");
+        params.clear();
+        params.put("HWBMID", getXml("HWBMID", "1"));
+        params.put("Bmspkftzid", getXml("BMSPKFTZID", "1"));
+        params.put("Czyid", getXml(AppConst.USERID, "1"));
+        params.put("Spxxid", getXml("SPXXID", "1"));
+        params.put("Oldhwbmid", getXml("HWID", "1"));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WebService.getInstance().callWebService(params, APIMethod.HwTz_Lr,
+                        ipUrl, new MResponseListener() {
+                            @Override
+                            public void onSuccess(MResponse response) {
+                                String callWebService = String.valueOf(response.data);
+                                callWebService = replaceStringNR(callWebService);
+                                if (callWebService.equals("录入成功")) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast("录入成功!");
+                                            goodstrimQMKCTv.setText("");
+                                            goodstrimHWBHTv.setText("");
+                                            goodstrimDJTv.setText("");
+                                            goodstrimFXFLMCTv.setText("");
+                                            goodstrimBBTv.setText("");
+                                            goodstrimPMTv.setText(""); //清除
+                                        }
+                                    });
+                                } else {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast("录入失败!");
+                                            goodstrimCleanBtn();
+                                        }
+                                    });
+                                }
+                                hideLoading();
+                                goodstrimInputEt.setFocusable(true);
+                                goodstrimInputEt.setFocusableInTouchMode(true);
+                                goodstrimInputEt.requestFocus();
+                                goodstrimInputEt.findFocus();
+                            }
+
+                            @Override
+                            public void onError(final MResponse response) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (response.msg != null) {
+                                            showToast(response.msg.toString());
+                                        } else {
+                                            showToast("出错了！");
+                                        }
+                                        hideLoading();
+                                    }
+                                });
+                            }
+                        });
+            }
+        }).start();
+
+    }
+
+    @Click
+    void goodstrimCleanBtn() {
+        //清除
+        goodstrimInputlocationEt.setText("");
+        goodstrimInputEt.setText("");
+        goodstrimQMKCTv.setText("");
+        goodstrimHWBHTv.setText("");
+        goodstrimDJTv.setText("");
+        goodstrimFXFLMCTv.setText("");
+        goodstrimBBTv.setText("");
+        goodstrimPMTv.setText("");
+        goodstrimInputlocationEt.setFocusable(true);
+        goodstrimInputlocationEt.setFocusableInTouchMode(true);
+        goodstrimInputlocationEt.requestFocus();
+    }
+
+    @Click
+    void goodstrimBrowseBtn() {
+        openAct(TrimBrowseAct.class, true);
+    }
+
+    @Click
+    void goodstrimHomepageBtn() {
+        openAct(MainAct.class, true);
+    }
+
+
+    @AfterViews
+    protected void main() {
+        App.getInstance().addActivity(TrimAct.this);
+        goodstrimInputlocationEt.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+        setClearBtnListener(goodstrimInputlocationEt, tel_et_clearbtn);
+        goodstrimInputEt.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+        setClearBtnListener(goodstrimInputEt, tel_et_clearbtn2);
+        goodstrimInputlocationEt.setOnKeyListener(onKeyListener);
+        goodstrimInputEt.setOnKeyListener(onKeyListener2);
+    }
+
+
+    @Override
+    protected Context regieterBaiduBaseCount() {
+        return null;
+    }
+
+    @Override
+    protected void initTitlebar() {
+
+    }
+
+    @Override
+    public void onEventMainThread(ViewMessage viewMessage) {
+
+    }
+
+    private boolean isET1 = false;
+    private boolean isET2 = false;
+
+    @Override
+    public void onGetBarcode(String barcode) {
+        barcodeResult = replaceStringNR(barcode);
+        if (isET2) {
+            goodstrimInputEt.setText(barcodeResult);
+            isET2 = false;
+        }
+        if (isET1) {
+            goodstrimInputlocationEt.setText(barcodeResult);
+            isET1 = false;
+        }
+
+    }
+
+    private ScanUtil scanUtil;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ipUrl = getXml("IP", "");
+        scanUtil = new ScanUtil(this);
+        scanUtil.setOnScanListener(new ScanUtil.OnScanListener() {
+
+            @Override
+            public void getBarcode(String barcode) {
+                onGetBarcode(barcode);
+            }
+        });
+    }
+
+    @Override
+    public void onPause() {
+        scanUtil.stopScan();
+        super.onPause();
+    }
+
+    private View.OnKeyListener onKeyListener = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    HWSelect(String.valueOf(goodstrimInputlocationEt.getText()));
+                    return true;
+                }
+                if (keyCode == KeyEvent.KEYCODE_F4) {
+                    isET1 = true;
+                    HWSelect(barcodeResult);
+                    return true;
+                }
+
+            }
+            return false;
+        }
+    };
+
+    private View.OnKeyListener onKeyListener2 = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    GetHwTz_Cx(barcodeResult);
+                    return true;
+                }
+                if (keyCode == KeyEvent.KEYCODE_F4) {
+                    isET2=true;
+                    GetHwTz_Cx(barcodeResult);
+                    return true;
+                }
+
+            }
+            return false;
+        }
+    };
+}

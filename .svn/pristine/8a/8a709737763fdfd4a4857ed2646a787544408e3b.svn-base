@@ -1,0 +1,124 @@
+package com.speedata.zhongqi.controller.act;
+
+import android.content.Context;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.speedata.zhongqi.R;
+import com.speedata.zhongqi.application.AppConst;
+import com.speedata.zhongqi.model.HttpModel;
+import com.speedata.zhongqi.view.CustomTitlebar;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
+import common.base.act.FragActBase;
+import common.event.ViewMessage;
+import common.http.MResponse;
+import common.http.MResponseListener;
+
+import static common.utils.LogUtil.DEGUG_MODE;
+
+/**
+ * Created by TER on 2016/6/20.
+ */
+@EActivity(R.layout.goodscheckfirst_activity)
+public class CheckAct extends FragActBase{
+    private static final String TAG = DEGUG_MODE ? "CheckAct" : CheckAct.class.getSimpleName();
+    private static final boolean debug = true;
+    @ViewById
+    EditText goodscheckfirstInputEt;
+    @ViewById
+    Button goodscheckfirstSureBtn;
+    @ViewById
+    Button goodscheckfirstExitBtn;
+
+
+    @Click
+    void goodscheckfirstExitBtn(){ openAct(MainAct.class,true); };
+
+
+    @AfterViews
+    protected void main() {
+        setSwipeEnable(false);
+        goodscheckfirstInputEt.setText("10020");
+
+
+
+    }
+
+    @Click
+    void goodscheckfirstSureBtn(){
+        final String checkLocation=goodscheckfirstInputEt.getText().toString();
+        if(checkLocations(checkLocation)){
+            showLoading("效验中");
+
+            location();
+        }
+
+    }
+
+    private void location() {
+        HttpModel.getInstance().GetHWMC(new MResponseListener() {
+            @Override
+            public void onSuccess(MResponse response) {
+                hideLoading();
+                Log.d(TAG, "onSuccess() returned: " + response.toString());
+                // TODO: 2016/6/21 解析并保存
+
+
+
+
+                openAct(CheckDetailAct.class, true);
+              //  setXml(AppConst.USERNAME, "");
+              //  setXml(AppConst.USERNAME, "");
+
+            }
+
+            @Override
+            public void onError(MResponse response) {
+                hideLoading();
+                Log.d(TAG, "onError() returned: " + response.toString());
+            }
+        }, "HWBH");
+    }
+
+
+
+
+
+    private boolean checkLocations(String checkLocation) {
+        if (checkLocation != null && checkLocation.length() == 5) {
+            return true;
+        } else {
+
+            return false;
+        }
+    }
+
+
+
+
+
+
+
+
+    @Override
+    protected Context regieterBaiduBaseCount() {
+        return null;
+    }
+
+    @Override
+    protected void initTitlebar() {
+
+    }
+
+    @Override
+    public void onEventMainThread(ViewMessage viewMessage) {
+
+    }
+}

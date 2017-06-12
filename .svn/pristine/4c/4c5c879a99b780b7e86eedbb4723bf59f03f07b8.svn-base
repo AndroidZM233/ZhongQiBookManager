@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+
+
+<LinearLayout
+
+
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_marginTop="30dp"
+        android:text="关于我们"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:textColor="#000000"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="3dp"
+        android:text="北京中启智源数字信息技术有限责任公司"
+        android:textSize="17.5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="
+\n
+\n
+        地        址：北京市西城区黄寺大街26号德胜\n
+\n
+                             置业大厦1号楼1801室\n
+\n
+        邮        编：100011\n
+\n
+        联系电话：010-88389223 转 807\n
+\n
+        电话传真：010-88389223 转 818\n
+\n
+        公司主页：http://www.gzqol.com"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:id="@+id/aboutus_back_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="返回"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+
+        android:background="@drawable/bg_alibuybutton"/>
+
+
+
+
+</LinearLayout>
+
+</LinearLayout>

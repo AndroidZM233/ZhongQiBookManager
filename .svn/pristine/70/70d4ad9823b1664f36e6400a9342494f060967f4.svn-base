@@ -1,0 +1,88 @@
+/*
+ *
+ * @author Echo
+ * @created 2016.6.3
+ * @email bairu.xu@speedatagroup.com
+ * @version v1.0
+ *
+ */
+
+package com.speedata.zhongqi.controller.act;
+
+import android.content.Context;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.speedata.zhongqi.R;
+import com.speedata.zhongqi.view.CustomTitlebar;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
+import common.base.act.FragActBase;
+import common.event.ViewMessage;
+
+@EActivity(R.layout.act_setting)
+public class SettingAct extends FragActBase {
+
+
+//    @ViewById
+//    TextView settingBackTv;
+    @ViewById
+    Button settingCheckversionBtn;
+    @ViewById
+    Button settingAboutusBtn;
+    @ViewById
+    CustomTitlebar titlebar;
+
+
+    @Click
+    void settingCheckversionBtn(){
+
+    }
+
+    @Click
+    void settingAboutusBtn(){
+        openAct(AboutUsAct.class,true);
+    }
+
+//    @Click
+//    void settingBackTv(){
+//        openAct(MainAct.class,true);
+//    }
+
+
+
+
+    @AfterViews
+    protected void main() {
+        initTitlebar();
+    }
+
+    @Override
+    protected Context regieterBaiduBaseCount() {
+        return null;
+    }
+
+    @Override
+    protected void initTitlebar() {
+
+        titlebar.setTitlebarStyle(CustomTitlebar.TITLEBAR_STYLE_NORMAL);
+        titlebar.setAttrs(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        }, "设置", null);
+    }
+
+    @Override
+    public void onEventMainThread(ViewMessage viewMessage) {
+
+    }
+
+
+}

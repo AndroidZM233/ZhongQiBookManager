@@ -1,0 +1,424 @@
+package com.speedata.zhongqi.controller.act;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Handler;
+import android.os.Message;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.alibaba.fastjson.JSON;
+import com.speedata.zhongqi.App;
+import com.speedata.zhongqi.R;
+import com.speedata.zhongqi.application.APIMethod;
+import com.speedata.zhongqi.application.AppConst;
+import com.speedata.zhongqi.bean.webServiceBean.SjcjCXBeanClass;
+import com.speedata.zhongqi.controller.adapter.CommonAdapter;
+import com.speedata.zhongqi.controller.adapter.ViewHolder;
+import com.speedata.zhongqi.view.NumberInput;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import common.base.IBaseScanFragment;
+import common.base.act.FragActBase;
+import common.event.ViewMessage;
+import common.http.MResponse;
+import common.http.MResponseListener;
+import common.utils.ScanUtil;
+import common.webserice.WebService;
+
+/**
+ * Created by TER on 2016/6/22.
+ */
+
+@EActivity(R.layout.act_goodscollect)
+public class GoodsCollectAct extends FragActBase implements IBaseScanFragment {
+    @ViewById
+    EditText edvSearchGoodscollect;
+    @ViewById
+    Button goodscollect_search_btn;
+    @ViewById
+    ListView goodscollectCollectlistviewLv;
+    @ViewById
+    TextView goodscollectZPZTv;
+    @ViewById
+    TextView goodscollectZSLTv;
+    @ViewById
+    TextView goodscollectZMYTv;
+    @ViewById
+    Button goodscollectCollectBtn;
+    @ViewById
+    Button goodscollectBrowseBtn;
+    //    @ViewById
+//    Button goodscollectPrintBtn;
+    @ViewById
+    Button goodscollectHomepageBtn;
+    @ViewById
+    TextView goodscollect_tvPM;
+    @ViewById
+    TextView goodscollect_tvSPXXID;
+    @ViewById
+    TextView goodscollect_tvQMKC;
+    @ViewById
+    TextView goodscollect_tvDJ;
+    @ViewById
+    ImageView tel_et_clearbtn;
+    private List<SjcjCXBeanClass.SjcjCXBean> sjcj_cx;
+    private static final int SjcjCXSuccess = 0;
+    private static final int SjcjLRSuccess = 1;
+    List<SjcjCXBeanClass.SjcjCXBean> sjcjCXBeanList = new ArrayList<SjcjCXBeanClass.SjcjCXBean>();
+
+
+    private ListView selectLV;
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                //一号多品选择
+                case SjcjCXSuccess:
+                    LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+                    final View view = layoutInflater.inflate(R.layout.dia_title
+                            , (ViewGroup) findViewById(R.id.dia_ll_main));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GoodsCollectAct.this);
+                    builder.setTitle(String.valueOf(msg.obj) + "(一号多书)");
+                    builder.setView(view);
+                    builder.setCancelable(false);
+                    final AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    selectLV = (ListView) alertDialog.findViewById(R.id.dia_lv);
+                    CommonAdapter commonAdapter = new CommonAdapter(mContext, sjcj_cx, R.layout.dia_content) {
+                        @Override
+                        public void convert(ViewHolder helper, Object item, int position) {
+                            helper.setText(R.id.tv_PM, sjcj_cx.get(position).getPM());
+                            helper.setText(R.id.tv_DJ, sjcj_cx.get(position).getDJ());
+                            helper.setText(R.id.tv_CBNY, sjcj_cx.get(position).getQMKC());
+                        }
+                    };
+                    selectLV.setAdapter(commonAdapter);
+                    selectLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            setXml("GOOD_SPXXID", sjcj_cx.get(position).getSPXXID());
+                            goodscollect_tvPM.setText("品名：" + sjcj_cx.get(position).getPM());
+                            goodscollect_tvSPXXID.setText(sjcj_cx.get(position).getTXM());
+                            goodscollect_tvQMKC.setText(sjcj_cx.get(position).getQMKC());
+                            goodscollect_tvDJ.setText(sjcj_cx.get(position).getDJ());
+                            alertDialog.cancel();
+                        }
+                    });
+                    break;
+
+                //采集成功更新界面
+                case SjcjLRSuccess:
+                    showToast("采集成功！");
+                    SjcjCXBeanClass.SjcjCXBean sjcjCXBean = new SjcjCXBeanClass.SjcjCXBean();
+                    sjcjCXBean.setCJSL(String.valueOf(msg.obj));
+                    sjcjCXBean.setPM(String.valueOf(goodscollect_tvPM.getText()));
+                    sjcjCXBean.setDJ(String.valueOf(goodscollect_tvDJ.getText()));
+                    sjcjCXBean.setQMKC(String.valueOf(goodscollect_tvQMKC.getText()));
+                    sjcjCXBean.setSPXXID(String.valueOf(goodscollect_tvSPXXID.getText()));
+                    sjcjCXBean.setTXM(String.valueOf(edvSearchGoodscollect.getText()));
+                    sjcjCXBeanList.add(0, sjcjCXBean);
+                    CommonAdapter commonAdapter1 = new CommonAdapter(mContext, sjcjCXBeanList, R.layout.act_customercollect_lv_content) {
+                        @Override
+                        public void convert(ViewHolder helper, Object item, int position) {
+                            helper.setText(R.id.customercollect_lv_tvPM,
+                                    sjcjCXBeanList.get(position).getPM());
+                            helper.setText(R.id.customercollect_lv_tvDJ,
+                                    sjcjCXBeanList.get(position).getDJ());
+                            helper.setText(R.id.customercollect_lv_tvSPXXID,
+                                    sjcjCXBeanList.get(position).getTXM());
+                            helper.setText(R.id.customercollect_lv_tvCJSL,
+                                    sjcjCXBeanList.get(position).getCJSL());
+                            helper.setText(R.id.customercollect_lv_tvQMKC,
+                                    sjcjCXBeanList.get(position).getQMKC());
+                        }
+                    };
+                    goodscollectCollectlistviewLv.setAdapter(commonAdapter1);
+                    goodscollect_tvSPXXID.setText("");
+                    goodscollect_tvQMKC.setText("");
+                    goodscollect_tvDJ.setText("");
+                    goodscollect_tvPM.setText("");
+                    break;
+            }
+        }
+    };
+
+    @Click
+    void goodscollect_search_btn() {
+        //搜索
+        if (TextUtils.isEmpty(edvSearchGoodscollect.getText())) {
+            showToast("请输入商品条形码");
+        } else {
+            GetSjcj_CX(edvSearchGoodscollect.getText() + "");
+        }
+    }
+
+    private void GetSjcj_CX(final String barcode) {
+        showLoading("查询中...");
+        params.clear();
+        params.put("TXM", barcode);
+        params.put("KHBH", "");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WebService.getInstance().callWebService(params, APIMethod.Sjcj_CX,
+                        ipUrl,new MResponseListener() {
+                            @Override
+                            public void onSuccess(MResponse response) {
+                                String callWebService = String.valueOf(response.data);
+                                callWebService=replaceStringNR(callWebService);
+                                if (callWebService.equals("数据获取失败！")) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showToast("数据获取失败！");
+                                            edvSearchGoodscollect.setFocusable(true);
+                                            edvSearchGoodscollect.setFocusableInTouchMode(true);
+                                            edvSearchGoodscollect.requestFocus();
+                                            goodscollect_tvSPXXID.setText("");
+                                            goodscollect_tvQMKC.setText("");
+                                            goodscollect_tvDJ.setText("");
+                                            goodscollect_tvPM.setText("");
+                                        }
+                                    });
+                                } else {
+                                    SjcjCXBeanClass sjcjCXBeanClass = JSON.parseObject(callWebService,
+                                            SjcjCXBeanClass.class);
+                                    sjcj_cx = sjcjCXBeanClass.getSjcj_CX();
+                                    if (sjcj_cx != null) {
+                                        if (sjcj_cx.size() > 1) {
+                                            Message message = new Message();
+                                            message.what = SjcjCXSuccess;
+                                            message.obj = barcode;
+                                            handler.sendMessage(message);
+                                            hideLoading();
+                                        } else {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    goodscollect_tvPM.setText("品名：" + sjcj_cx.get(0).getPM());
+                                                    goodscollect_tvSPXXID.setText(sjcj_cx.get(0).getTXM());
+                                                    goodscollect_tvQMKC.setText(sjcj_cx.get(0).getQMKC());
+                                                    goodscollect_tvDJ.setText(sjcj_cx.get(0).getDJ());
+                                                    setXml("GOOD_SPXXID", sjcj_cx.get(0).getSPXXID());
+
+                                                }
+                                            });
+
+                                        }
+                                    }
+                                }
+                                hideLoading();
+                            }
+
+                            @Override
+                            public void onError(final MResponse response) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (response.msg != null) {
+                                            showToast(response.msg.toString());
+                                        } else {
+                                            showToast("出错了！");
+                                        }
+                                        hideLoading();
+                                    }
+                                });
+                            }
+                        });
+            }
+        }).start();
+    }
+
+    @Click
+    void goodscollectCollectBtn() {
+        //采集
+        String customercollect_tvPMText = String.valueOf(goodscollect_tvPM.getText());
+        if (customercollect_tvPMText.equals("品名:")||customercollect_tvPMText.equals("")) {
+            showToast("请先进行商品查询！");
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(GoodsCollectAct.this);
+        builder.setTitle("请输入采集数量：");
+        final NumberInput numberInput=new NumberInput(mContext);
+        numberInput.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                numberInput.etSelectAll();
+                return false;
+            }
+        });
+        builder.setView(numberInput);
+        builder.setCancelable(false);
+        builder.setPositiveButton("退出", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setNegativeButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String etGetText = numberInput.etGetText();
+                final String collectNum = String.valueOf(etGetText);
+                if (TextUtils.isEmpty(collectNum)) {
+                    showToast("请填写采集数量！");
+                    return;
+                } else {
+                    showLoading("采集中...");
+                    params.clear();
+                    params.put("Khid", "");
+                    params.put("Spxxid", getXml("GOOD_SPXXID", "1"));
+                    params.put("CJsl", collectNum);
+                    params.put("Czyid", getXml(AppConst.USERID, "1"));
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            WebService.getInstance().callWebService(params,
+                                    APIMethod.Sjcj_Lr, ipUrl,new MResponseListener() {
+                                        @Override
+                                        public void onSuccess(MResponse response) {
+                                            String callWebService = String.valueOf(response.data);
+                                            callWebService=replaceStringNR(callWebService);
+                                            if (callWebService.equals("采集成功")) {
+                                                Message message = new Message();
+                                                message.what = SjcjLRSuccess;
+                                                message.obj = collectNum;
+                                                handler.sendMessage(message);
+                                                hideLoading();
+                                            } else {
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        showToast("采集失败！");
+                                                        hideLoading();
+                                                    }
+                                                });
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(final MResponse response) {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    if (response.msg != null) {
+                                                        showToast(response.msg.toString());
+                                                    } else {
+                                                        showToast("出错了！");
+                                                    }
+                                                    hideLoading();
+                                                }
+                                            });
+                                        }
+                                    });
+
+                        }
+                    }).start();
+                }
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    @Click
+    void goodscollectBrowseBtn() {
+        openAct(GoodsBrowseAct.class, true);
+    }
+
+    @Click
+    void goodscollectHomepageBtn() {
+        openAct(MainAct.class, true);
+    }
+
+
+    @AfterViews
+    protected void main() {
+        App.getInstance().addActivity(GoodsCollectAct.this);
+        edvSearchGoodscollect.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+        setClearBtnListener(edvSearchGoodscollect, tel_et_clearbtn);
+        edvSearchGoodscollect.setOnKeyListener(onKeyListener);
+    }
+
+    @Override
+    protected Context regieterBaiduBaseCount() {
+        return null;
+    }
+
+    @Override
+    protected void initTitlebar() {
+
+    }
+
+    @Override
+    public void onEventMainThread(ViewMessage viewMessage) {
+
+    }
+
+    @Override
+    public void onGetBarcode(String barcode) {
+        barcode = replaceStringNR(barcode);
+        edvSearchGoodscollect.setText(barcode);
+        GetSjcj_CX(barcode);
+    }
+
+    private ScanUtil scanUtil;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ipUrl=getXml("IP","");
+        scanUtil = new ScanUtil(this);
+        scanUtil.setOnScanListener(new ScanUtil.OnScanListener() {
+
+            @Override
+            public void getBarcode(String barcode) {
+                onGetBarcode(barcode);
+            }
+        });
+    }
+
+    @Override
+    public void onPause() {
+        scanUtil.stopScan();
+        super.onPause();
+    }
+
+    private View.OnKeyListener onKeyListener = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if (event.getAction()==KeyEvent.ACTION_DOWN){
+                if (keyCode==KeyEvent.KEYCODE_ENTER){
+                    goodscollect_search_btn();
+                    return true;
+                }
+            }
+            return false;
+        }
+    };
+
+}

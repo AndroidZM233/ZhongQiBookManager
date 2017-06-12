@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "G:\\AndroidStudioProject\\ZhongQiBookManager\\app\\build\\intermediates\\res\\merged\\debug\\raw\\scan.wav",
+        "source": "G:\\AndroidStudioProject\\ZhongQiBookManager\\app\\src\\main\\res\\raw\\scan.wav"
+    },
+    {
+        "merged": "G:\\AndroidStudioProject\\ZhongQiBookManager\\app\\build\\intermediates\\res\\merged\\debug\\raw\\error.wav",
+        "source": "G:\\AndroidStudioProject\\ZhongQiBookManager\\app\\src\\main\\res\\raw\\error.wav"
+    }
+]

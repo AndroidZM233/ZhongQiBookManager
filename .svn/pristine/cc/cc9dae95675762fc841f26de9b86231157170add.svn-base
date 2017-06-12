@@ -1,0 +1,384 @@
+package com.speedata.zhongqi.view;
+
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.elsw.base.utils.ToastUtil;
+import com.speedata.zhongqi.R;
+
+import java.io.IOException;
+
+/**
+ * Created by 74118 on 2016/7/20.
+ */
+
+public class NumberInput extends LinearLayout implements View.OnTouchListener {
+
+    private int mHeight;
+    private int mWidth;
+    private EditText mEditText;
+    private int mBorderColor;
+    private float mBorderWidth;
+    private int mMinusColor;
+    private float mMinusWidth;
+    private int mPlusColor;
+    private float mPlusWidth;
+    private int mInitialValue = 1;
+    private int mMinValue = 1;
+    private TextWatcher mWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String stringET = mEditText.getText().toString();
+            if (TextUtils.isEmpty(stringET) ) {
+                return;
+            }
+            int value=0;
+            try {
+                value = Integer.valueOf(stringET);
+            }catch (Exception e){
+                e.printStackTrace();
+                mEditText.setText("1");
+                mEditText.setSelectAllOnFocus(true);
+                mEditText.selectAll();
+            }
+
+            if (value <= mMinValue) {
+                mMinusButton.setEnabled(false);
+            } else {
+                mMinusButton.setEnabled(true);
+            }
+            mPlusButton.setEnabled(true);
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+
+
+    };
+    private View mPlusButton;
+    private View mMinusButton;
+
+
+    public NumberInput(Context context) {
+        this(context, null);
+    }
+
+    public NumberInput(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public NumberInput(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        // viewGroup必须设置背景，这样才会调用onDraw()方法
+        setBackgroundColor(Color.TRANSPARENT);
+        init(context, attrs);
+        initView(context);
+    }
+
+    public String etGetText() {
+        String text = String.valueOf(mEditText.getText());
+        return text;
+    }
+
+    public void etSetOne() {
+        mEditText.setText("1");
+        mEditText.setSelectAllOnFocus(true);
+        mEditText.selectAll();
+    }
+
+    public void etSelectAll() {
+        mEditText.setSelectAllOnFocus(true);
+        mEditText.selectAll();
+        InputMethodManager imm = (InputMethodManager) mEditText.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+    }
+    public void etSelectAllHideInput() {
+        mEditText.setSelectAllOnFocus(true);
+        mEditText.selectAll();
+        InputMethodManager imm = (InputMethodManager) mEditText.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEditText.getWindowToken(),0);
+
+    }
+
+    public void etFocusable() {
+        mEditText.setFocusable(true);
+        mEditText.setFocusableInTouchMode(true);
+        mEditText.requestFocus();
+
+    }
+    public EditText backEditText(){
+        return mEditText;
+    }
+    /**
+     * 获取自定义属性值
+     */
+    private void init(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.NumberInput);
+        mBorderColor = typedArray.getColor(R.styleable.NumberInput_border_color, Color.GRAY);
+        mBorderWidth = typedArray.getDimension(R.styleable.NumberInput_border_width, 10);
+        mMinusColor = typedArray.getColor(R.styleable.NumberInput_minus_color, Color.GRAY);
+        mMinusWidth = typedArray.getDimension(R.styleable.NumberInput_minus_width, 3);
+        mPlusColor = typedArray.getColor(R.styleable.NumberInput_plus_color, Color.GRAY);
+        mPlusWidth = typedArray.getDimension(R.styleable.NumberInput_plus_width, 3);
+        mInitialValue = typedArray.getInteger(R.styleable.NumberInput_initial_value, 1);
+        mMinValue = typedArray.getInteger(R.styleable.NumberInput_min_value, 1);
+        // 回收资源
+        typedArray.recycle();
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        mWidth = getMeasuredWidth();
+        mHeight = getMeasuredHeight();
+
+        Paint borderPaint = new Paint();
+        borderPaint.setAntiAlias(true);
+        borderPaint.setStrokeWidth(mBorderWidth);
+        borderPaint.setStyle(Paint.Style.STROKE);
+        borderPaint.setColor(mBorderColor);
+
+        canvas.drawRect(0, 0, mWidth, mHeight, borderPaint);
+        borderPaint.setStrokeWidth(mBorderWidth / 8);
+        canvas.drawLine(mWidth / 2 +96, 0, mWidth / 2+96 , mHeight, borderPaint);
+        canvas.drawLine(mWidth / 5 - mBorderWidth / 4+20, 0, mWidth / 5 - mBorderWidth / 4+20, mHeight, borderPaint);
+    }
+
+    private void initView(Context context) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.CENTER;
+        params.setMargins(10, 6, 10, 6);
+        params.weight = 2;
+
+        mMinusButton = new MinusView(context);
+        mMinusButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String etValues = mEditText.getText().toString();
+                if (TextUtils.isEmpty(etValues)){
+                    etValues="0";
+                }
+                int currentNum = Integer.valueOf(etValues);
+                currentNum--;
+                String text = currentNum + "";
+                mEditText.setText(text);
+                mEditText.setSelection(text.length());
+            }
+        });
+        if (mInitialValue <= mMinValue) {
+            mMinusButton.setEnabled(false);
+        }
+        addView(mMinusButton, params);
+
+        mEditText = new EditText(context);
+        // 做个判断，如果给的初始值小于最小值，那么初始值就是最小值
+        // 如果给的初始值大于最大值，那么初始值就是最大值
+        if (mInitialValue <= mMinValue) {
+            mEditText.setText(mMinValue + "");
+        } else {
+            mEditText.setText(mInitialValue + "");
+        }
+        mEditText.requestFocus();
+        mEditText.setGravity(Gravity.CENTER);
+        // 去除默认的下划线
+        mEditText.setBackground(null);
+        mEditText.setTextSize(25);
+        mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        mEditText.setSelectAllOnFocus(true);
+        mEditText.selectAll();
+        mEditText.addTextChangedListener(mWatcher);
+        mEditText.setOnTouchListener(this);
+        params.weight = 1;
+        addView(mEditText, params);
+
+        mPlusButton = new PlusView(context);
+        params.weight = 2;
+        mPlusButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String etValues = mEditText.getText().toString();
+                if (TextUtils.isEmpty(etValues)){
+                    etValues="0";
+                }
+                int currentNum = Integer.valueOf(etValues);
+                currentNum++;
+                String text = currentNum + "";
+                mEditText.setText(text);
+                mEditText.setSelection(text.length());
+            }
+        });
+        addView(mPlusButton, params);
+    }
+
+    int count = 0;
+    long firClick = 0;
+    long secClick = 0;
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (MotionEvent.ACTION_DOWN == event.getAction()) {
+            count++;
+
+            if (count == 1) {
+                firClick = System.currentTimeMillis();
+
+            } else if (count == 2) {
+                secClick = System.currentTimeMillis();
+                if (secClick - firClick < 1000) {
+                    //双击事件
+
+                    mEditText.setFocusable(true);
+                    mEditText.setFocusableInTouchMode(true);
+                    mEditText.requestFocus();
+                    etSelectAll();
+                }
+                count = 0;
+                firClick = 0;
+                secClick = 0;
+
+            }
+        }
+        return true;
+    }
+
+
+    class MinusView extends View {
+
+        private Paint mMinusPaint;
+
+        public MinusView(Context context) {
+            this(context, null);
+        }
+
+        public MinusView(Context context, AttributeSet attrs) {
+            this(context, attrs, 0);
+        }
+
+        public MinusView(Context context, AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+            mMinusPaint = new Paint();
+            mMinusPaint.setAntiAlias(true);
+            mMinusPaint.setStrokeWidth(mMinusWidth);
+            mMinusPaint.setStyle(Paint.Style.STROKE);
+            mMinusPaint.setStrokeCap(Paint.Cap.ROUND);
+            mMinusPaint.setColor(mMinusColor);
+        }
+
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+            int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+            int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+            int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+            if (widthMode == MeasureSpec.AT_MOST) {
+                widthSize = Math.min(widthSize, 30);
+            }
+            if (heightMode == MeasureSpec.AT_MOST) {
+                heightSize = Math.min(heightSize, 30);
+            }
+            setMeasuredDimension(widthSize, heightSize);
+
+        }
+
+        /**
+         * 返回控件中的数值
+         *
+         * @return 数值
+         */
+        public int getNumber() {
+            return Integer.valueOf(mEditText.getText().toString());
+        }
+
+
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            mWidth = getMeasuredWidth();
+            mHeight = getMeasuredHeight();
+            canvas.drawLine(mWidth / 5, mHeight / 2, mWidth - mWidth / 3, mHeight / 2, mMinusPaint);
+        }
+    }
+
+    class PlusView extends View {
+
+        private Paint mPlusPaint;
+
+        public PlusView(Context context) {
+            this(context, null);
+        }
+
+        public PlusView(Context context, AttributeSet attrs) {
+            this(context, attrs, 0);
+        }
+
+        public PlusView(Context context, AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+            mPlusPaint = new Paint();
+            mPlusPaint.setAntiAlias(true);
+            mPlusPaint.setStrokeWidth(mPlusWidth);
+            mPlusPaint.setStyle(Paint.Style.STROKE);
+            mPlusPaint.setStrokeCap(Paint.Cap.ROUND);
+            mPlusPaint.setColor(mPlusColor);
+        }
+
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+            int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+            int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+            int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+            if (widthMode == MeasureSpec.AT_MOST) {
+                widthSize = Math.min(widthSize, 30);
+            }
+            if (heightMode == MeasureSpec.AT_MOST) {
+                heightSize = Math.min(heightSize, 50);
+            }
+            setMeasuredDimension(widthSize, heightSize);
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            mWidth = getMeasuredWidth();
+            mHeight = getMeasuredHeight();
+            canvas.drawLine(mWidth - mWidth / 5, mHeight / 2, mWidth / 5, mHeight / 2, mPlusPaint);
+            canvas.save();
+            canvas.rotate(90, mWidth / 2, mHeight / 2);
+            canvas.drawLine(mWidth / 5, mHeight / 2, mWidth - mWidth / 5, mHeight / 2, mPlusPaint);
+            canvas.restore();
+        }
+    }
+
+
+}
+

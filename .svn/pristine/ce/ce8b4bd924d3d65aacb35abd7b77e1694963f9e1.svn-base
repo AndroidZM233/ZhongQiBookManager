@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@+id/left_top"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:orientation="vertical">
+
+    <com.speedata.zhongqi.view.CustomTitlebar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearLayout"
+        android:layout_below="@+id/titlebar"
+        android:fillViewport="true">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:divider="@color/commom_item_line_color"
+            android:showDividers="middle"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:divider="@color/commom_item_line_color"
+                android:id="@+id/tableRow1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/num2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:text="收货入库"
+                    />
+                <View
+                    android:layout_height="match_parent"
+                    android:layout_width="1px"
+                    android:background="@color/commom_item_line_color" />
+                <TextView
+                    android:id="@+id/num3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:text="派货扫描"/>
+            </TableRow>
+            <View
+                android:layout_height="1px"
+                android:background="@color/commom_item_line_color" />
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/num4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:textColor="@color/lin_title_bc"
+                    android:background="@drawable/selector_item"
+                    android:text="装车扫描（始发网点）" />
+                <View
+                    android:layout_height="match_parent"
+                    android:layout_width="1px"
+                    android:background="@color/commom_item_line_color" />
+                <TextView
+                    android:id="@+id/num5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:text="装车扫描（到件中心）" />
+                <View
+                    android:layout_height="match_parent"
+                    android:layout_width="1px"
+                    android:background="@color/commom_item_line_color" />
+                <TextView
+                    android:id="@+id/num6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:text="装车扫描（中转）"/>
+            </TableRow>
+            <View
+                android:layout_height="1px"
+                android:background="@color/commom_item_line_color" />
+            <TableRow
+                android:id="@+id/tableRow3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/num7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:textColor="@color/lin_title_bc"
+                    android:background="@drawable/selector_item"
+                    android:text="清单合并扫描" />
+                <View
+                    android:layout_height="match_parent"
+                    android:layout_width="1px"
+                    android:background="@color/commom_item_line_color" />
+                <TextView
+                    android:id="@+id/num8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:text="库存盘点" />
+                <View
+                    android:layout_height="match_parent"
+                    android:layout_width="1px"
+                    android:background="@color/commom_item_line_color" />
+                <TextView
+                    android:id="@+id/num9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:text="异常扫描"/>
+            </TableRow>
+            <View
+                android:layout_height="1px"
+                android:background="@color/commom_item_line_color" />
+            <TableRow
+                android:id="@+id/tableRow4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/num10"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:background="@drawable/selector_item"
+                    android:textColor="@color/lin_title_bc"
+                    android:text="留仓扫描" />
+                <View
+                    android:layout_height="match_parent"
+                    android:layout_width="1px"
+                    android:background="@color/commom_item_line_color" />
+                <TextView
+                    android:id="@+id/num11"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:text="装笼扫描" />
+                <View
+                    android:layout_height="match_parent"
+                    android:layout_width="1px"
+                    android:background="@color/commom_item_line_color" />
+                <TextView
+                    android:id="@+id/num12"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:text="拆笼扫描"/>
+            </TableRow>
+            <View
+                android:layout_height="1px"
+                android:background="@color/commom_item_line_color" />
+            <TableRow
+                android:id="@+id/tableRow5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/num13"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:text="扫描分拣查询" />
+                <View
+                    android:layout_height="match_parent"
+                    android:layout_width="1px"
+                    android:background="@color/commom_item_line_color" />
+                <TextView
+                    android:id="@+id/num14"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:text="解封扫描" />
+                <View
+                    android:layout_height="match_parent"
+                    android:layout_width="1px"
+                    android:background="@color/commom_item_line_color" />
+                <TextView
+                    android:id="@+id/num15"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_temp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:text="旧版本"/>
+            </TableRow>
+
+
+
+        </TableLayout>
+
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/theme_color"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_item_blue">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_launcher" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="首页"
+                    android:textColor="@color/text_white" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_item_blue">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_launcher" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="业务查询"
+                    android:textColor="@color/text_white" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,2 @@
+PDLL=com.speedata.zhongqi.bean.response.RspCommon
+CheckUser=com.speedata.zhongqi.bean.response.RspCommon
